@@ -1,3 +1,8 @@
+/*
+* Programmer: Muhammad Umar
+* Student Id: 23K-0023
+*/
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -9,9 +14,7 @@ struct Register {
 
 struct Student : Register {
     int studentId;
-    string firstName, lastName;
-    int cellNo;
-    string email;
+    string firstName, lastName, cellNo, email;
 };
 
 Student takeInput() {
@@ -43,16 +46,18 @@ Student takeInput() {
 }
 
 void printData(Student students[]) {
-    for(int i = 0; i < 5; i++) {
-        cout << "Details fore Student " << i+1 << endl << "Course Id : " << students[i].courseId << endl << "Course Name : " << students[i].courseName << endl << ""
-    }
+    for(int i = 0; i < 5; i++) cout << endl << "Details fore Student " << i+1 << endl << "Course Id : " << students[i].courseId << endl << "Course Name : " << students[i].courseName << endl << "Student Id : " << students[i].studentId << endl << "Student's First Name : " << students[i].firstName << endl << "Student's Last Name : " << students[i].lastName << endl << "Cell No : " << students[i].cellNo << endl << "Email : " << students[i].email << endl;
 }
 
 int main() {
     Student students[5];
 
     for(int i = 0; i < 5; i++) {
-        cout << "Enter details for student " << i+1 << endl;
+        cout << endl << "Enter details for student " << i+1 << endl;
         students[i] = takeInput(); 
     }
+    
+    cout << endl;
+    
+    printData(students);
 }

@@ -4,7 +4,6 @@
 */
 
 #include <iostream>
-#include <string>
 using namespace std;
 
 void recursiveSwap(int &a, int &b, int n = 3) {

@@ -11,12 +11,20 @@ class BoardMarker {
     bool refillable, status;
 
     public :
-        void setData(string b, string s, bool ref, bool stat) {
-            brand = b, shade = s, refillable = ref, status = stat;
+        void setBrand(string b) {
+            brand = b;
         }
-
-        void getData() {
-            cout << "Brand : " << brand << endl << "Shade : " << shade << endl << "Refillable : " << (refillable ? "Yes" : "No") << endl << "Status : " << (status ? "depleted" : "Not depleted") << endl;
+        
+        void setShade(string s) {
+            shade = s;
+        }
+        
+        void setRefillabilty(bool ref) {
+            refillable = ref;
+        }
+        
+        void setStatus(bool stat) {
+            status = stat;
         }
 
         void writing() {
@@ -26,14 +34,32 @@ class BoardMarker {
         void refill() {
             cout << (refillable ? "Can be refilled" : "Cant be refilled") << endl; 
         }
+        
+        string getBrand() {
+            return brand;
+        }
+        
+        string getShade() {
+            return shade;
+        }
+        
+        bool getRefillability() {
+            return refillable;
+        }
+        
+        bool getStatus() {
+            return status;
+        }
 };
 
 int main() {
 
     BoardMarker m1;
 
-    m1.setData("dollar", "blue", false, true);
-    m1.getData();
+    m1.setBrand("Dollar"), m1.setShade("Black"), m1.setRefillabilty(false), m1.setStatus(true);
+    
+    cout << "Brand : " << m1.getBrand() << endl << "Shade : " << m1.getStatus() << endl << "Refillable : " << (m1.getRefillability() ? "Yes" : "No") << endl << "Status : " << (m1.getStatus() ? "depleted" : "Not depleted") << endl;
+    
     m1.writing();
     m1.refill();
 

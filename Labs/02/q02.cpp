@@ -24,7 +24,7 @@ struct Book {
     }
 };
 
-void menu(int totalBooks) {
+void menu() {
     cout << "Choose any option from following" << endl << "\t1. Add book or books" << endl << "\t2. Update any book" << endl << "\t3. Display all books" << endl << "\t4. Exit" << endl;
 }
 
@@ -72,7 +72,7 @@ int main(){
     int totalBooks = 0;
     
     while(true) {
-        menu(totalBooks);
+        menu();
         int choice;
         cout << "Choice : ";
         cin >> choice;

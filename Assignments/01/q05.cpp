@@ -13,17 +13,8 @@ class Restaurant {
         
         int totalMenu;
         
-        void setMenuAndPriceList() {
-            cout << "Enter total number of menu : ";
-            cin >> totalMenu;
+        void setMenuAndPriceList(string menu1, float price1, string menu2, float price2, string menu3, float price3) {
             
-            for(int i = 0; i < totalMenu; i++) {
-                cout << "Enter details of menu " << i+1 << endl << "Enter name : ";
-                cin >> menuList[i];
-
-                cout << "Enter price : ";
-                cin >> priceList[i];
-            }
         }
         
         void displayMenu() {
@@ -45,29 +36,73 @@ class Restaurant {
 };
 
 class BOGOCoupon {
-    string couponCode, validFrom, validUntil, restaurantCode;
+    string couponCode, restaurantCode;
+    int validFrom, validUntil;
     
-    private : 
-        bool isValid() {
-            
+    public : 
+        BOGOCoupon();
+        BOGOCoupon(string cCode, int vFrom, int vUntil, string resCode) {
+            couponCode = cCode, validFrom = vFrom, validUntil = vUntil, restaurantCode = resCode;
         }
+
+        bool isValid(int usedDate) {
+            if(validFrom <= usedDate && validUntil >= usedDate) {
+                cout << "Coupon is within its validity period" << endl;
+            } else{
+                cout << "Coupon is not in its validity period" << endl;
+            }
+        }
+
+        friend class User; 
 };
 
 class User {
-    string name, couponsList[15];
+    string name, redeemCoupons[15];
+    BOGOCoupon couponsList[15];
     int age, mobileNumber;
+    static int counter;
     
-    private : 
+    public : 
+        User(string n, int a, int mb) {
+            name = n, age = a, mobileNumber = mb;
+        }
+
         void accumulateCoupon() {
-            
+            string couponCode, restaurantCode;
+            int validFrom, validUntil;
+
+            cout << "Enter detais of resturant " << counter+1 << endl << "Enter restaurant code : ";
+            cin >> couponsList[counter].restaurantCode;
+
+            cout << "Enter coupon code : ";
+            cin >> couponsList[counter].couponCode;
+
+            cout << "Enter the date from which coupon is valid from : ";
+            cin >> couponsList[counter].validFrom;
+
+            cout << "Enter the date till which coupon is valid : ";
+            cin >> couponsList[counter].validUntil;
+
+            if(hasValidCoupon(couponsList[counter], couponsList[counter].couponCode) && !redeemCoupon(couponsList[counter].couponCode)) counter++;
         }
         
-        bool hasValidCoupon() {
+        bool hasValidCoupon(BOGOCoupon& bg, string coupon) {
+            if(bg.restaurantCode[0] == coupon[0] && bg.restaurantCode[1] == coupon[1]) return true;
             
+            cout << "Coupon code is not valid" << endl;
+            return false;
         }
         
-        bool redeemCoupon() {
-            
+        bool redeemCoupon(string coupon) {
+            for(int i = 0; i < counter; i++) {
+                if(redeemCoupons[i] == coupon) {
+                    cout << "This coupon is already redeemed" << endl;
+                    return false;
+                }
+            }
+
+            redeemCoupons[counter] = coupon;
+            return true;
         }
 };
 

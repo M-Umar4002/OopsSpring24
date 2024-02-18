@@ -25,8 +25,8 @@ int main() {
     Book b1;
     b1.checkPagesRead();
 
-    Book b2("Book 2", "Talha", 45, 300, 300);
-    b2.checkPagesRead();
+    b1 = Book("Book 2", "Talha", 45, 300, 300);
+    b1.checkPagesRead();
 
     return 0;
 }

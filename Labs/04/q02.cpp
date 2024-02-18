@@ -6,46 +6,32 @@ class Book {
     int isbnNumber, totalPages, pagesRead;
 
     public :
-        Book() {
-            name = "Book 1", author = "Umar", isbnNumber = 23, totalPages = 1000, pagesRead = 0;
-        }
-
-        Book(string n, string aut, int isbnNum, int totalPageCount, int totalPagesRead) {
-            name = n, author = aut, isbnNumber = isbnNum, totalPages = totalPageCount, pagesRead = totalPagesRead;
-        }
-
+        Book() : totalPages(1000), pagesRead(0) {}
+    
         void setName(string n) {
             name = n;
         }
-
+        
         void setAuthor(string aut) {
             author = aut;
         }
-
-        void setIsbnNumber(int isbnNum) {
+        
+        void setIsbnNum(int isbnNum) {
             isbnNumber = isbnNum;
         }
 
-        void setTotalPages(int totalPageCount) {
-            totalPages = totalPageCount;
-        }
-
-        void setPagesRead(int totalPagesRead) {
-            pagesRead = totalPagesRead;;
-        }
-
         void showBookInfo() {
-
+            cout << "Book Name : " << name << endl << "Author name : " << author << endl << "ISBN number : " << isbnNumber << endl << "Total pages of book : " << totalPages << endl << "Pages readed : " << pagesRead << endl;
         }
 };
 
 int main() {
 
     Book b1;
-    // b1.checkPagesRead();
-
-    Book b2("Book 2", "Talha", 45, 300, 300);
-    // b2.checkPagesRead();
+    b1.setName("Book 1"), b1.setAuthor("Umar"), b1.setIsbnNum(23);
+    
+    cout << "Details of book" << endl;
+    b1.showBookInfo();
 
     return 0;
 }

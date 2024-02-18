@@ -25,7 +25,7 @@ class WeekDays {
         }
         
         string getNextDay() {
-            return days[currentDay+1 > 6 ? currentDay-6 : currentDay+1];
+            return days[(currentDay+1)%7];
         }
         
         string getPreviousDay() {

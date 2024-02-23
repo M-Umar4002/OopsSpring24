@@ -6,11 +6,31 @@ using namespace std;
 class Pet {
     string healthStatus, name;
     int hungerLevel, happinessLevel;
-    array<string, 3> specialSkills;
+    vector<string> specialSkills;
     
     public : 
-        void setData(string n, string health, int hung, int hap) {
+        void addPet() {
+            cout << "Enter pet's name : ";
+            cin >> name;
             
+            cout << "Enter health status : ";
+            cin >> healthStatus;
+            
+            cout << "Enter hunger level : ";
+            cin >> hungerLevel;
+            
+            cout << "Enter happiness level : ";
+            cin >> happinessLevel;
+            
+            int size;
+            
+            cout << "Enter total number of skills : ";
+            cin >> size;
+            
+            for(int i = 0; i < size; i++) {
+                cout << "Enter skill " << i+1 << " : ";
+                cin >> specialSkills[i];
+            }
         }
     
         void displayPetDetails() {
@@ -34,7 +54,7 @@ class Pet {
             hungerLevel = hunger;
             
             if(hungerLevel >= 5) {
-                happinessLevel --;
+                happinessLevel--;
             } else {
                 happinessLevel++;
             }
@@ -72,14 +92,42 @@ class Adopter {
                 cout << endl;
             }
         }
+        
+        string getName() {
+            return name;
+        }
 };
 
 void menu() {
     cout << "Choose any option from following" << endl << "\t1. Add pet" << endl << "\t2. Display all pets" << endl << "\t3. Adopt pet" << endl << "\t4. Display all adopteed pets" << endl << "\t5. Return pet" << endl << "\t6. Exit" << endl;
 }
 
-void addPet() {
+Pet addPet() {
+    Pet pet;
     
+    cout << endl << "Enter details of pet : " << endl;
+    pet.addPet();
+    
+    return pet;
+}
+
+void displayAllPets(Pet pets[], int totalPets) {
+    for(int i = 0; i < totalPets; i++) {
+        cout << "Details of pet " << i+1 << endl;
+        pets[i].displayPetDetails();
+        cout << endl;
+    }
+}
+
+void adopPet(Pet pets[], int totalPets) {
+    string name;
+    
+    cout << "Enter pet name you want to adopt : ";
+    cin >> name;
+    
+    for(int i = 0; i < totalPets; i++) {
+        if(pets[i].getName() == name)
+    }
 }
 
 int main() {
@@ -96,10 +144,10 @@ int main() {
         
         switch(choice) {
             case 1 : 
-                cout << endl << "Enter details of pet : " << endl;
-                
+                pets[totalPets++] = addPet();
                 break;
             case 2 : 
+                displayAllPets(pets, totalPets);
                 break;
             case 3 : 
                 break;

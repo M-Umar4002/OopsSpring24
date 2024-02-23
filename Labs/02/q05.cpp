@@ -1,140 +1,75 @@
 #include <iostream>
-#include <array>
-#include <vector>
 using namespace std;
 
-class Pet {
-    string healthStatus, name;
-    int hungerLevel, happinessLevel;
-    vector<string> specialSkills;
+struct Book {
+    string title, author, genre;
+    int year;
     
-    public : 
-        void addPet() {
-            cout << "Enter pet's name : ";
-            cin >> name;
-            
-            cout << "Enter health status : ";
-            cin >> healthStatus;
-            
-            cout << "Enter hunger level : ";
-            cin >> hungerLevel;
-            
-            cout << "Enter happiness level : ";
-            cin >> happinessLevel;
-            
-            int size;
-            
-            cout << "Enter total number of skills : ";
-            cin >> size;
-            
-            for(int i = 0; i < size; i++) {
-                cout << "Enter skill " << i+1 << " : ";
-                cin >> specialSkills[i];
-            }
-        }
+    void inputDetails() {
+        cout << "Enter book title : ";
+        cin >> title;
+        
+        cout << "Enter book author : ";
+        cin >> author;
+        
+        cout << "Enter book genre : ";
+        cin >> genre;
+        
+        cout << "Enter year of publication : ";
+        cin >> year;
+    }
     
-        void displayPetDetails() {
-            cout << "Health status : " << healthStatus << endl << "Happiness level : " << happinessLevel << endl << "Hunger level : " << hungerLevel << endl;
-            
-            for(int i = 0; i < specialSkills.size(); i++) {
-                if(!i) cout<< endl << "Special skills are" << endl;
-                cout << specialSkills[i] << endl;
-            }
-        }
-        
-        void updateHappiness(int hap) {
-            happinessLevel = hap;
-        }
-        
-        void updateHealth(int health) {
-            healthStatus = health;
-        }
-        
-        void updateHunger(int hunger) {
-            hungerLevel = hunger;
-            
-            if(hungerLevel >= 5) {
-                happinessLevel--;
-            } else {
-                happinessLevel++;
-            }
-        }
-        
-        string getName() {
-            return name;
-        }
-};
-
-class Adopter {
-    string adopterName;
-    int adopterMobileNum;
-    vector<Pet> adoptedPetRecords;
-    
-    public : 
-        Adopter(string name, int mobNum) : adopterName(name), adopterMobileNum(mobNum) {}
-        
-        void adoptPet(Pet pet) {
-            adoptedPetRecords.push_back(pet);
-        }
-        
-        void returnPet(string name) {
-            for(int i = 0; i < adoptedPetRecords.size(); i++) {
-                if(adoptedPetRecords[i].getName() == name) {
-                    adoptedPetRecords.erase(adoptedPetRecords.begin()+i);
-                }
-            }
-        }
-        
-        void displayAdoptedPets() {
-            for(Pet pet : adoptedPetRecords) {
-                cout << "Name : " << pet.getName() << endl;
-                pet.displayPetDetails();
-                cout << endl;
-            }
-        }
-        
-        string getName() {
-            return name;
-        }
+    void outputDetails() {
+        cout << "Title :\t" << title << endl << "Author : " << author << endl << "Genre : " << genre << endl << "Year of Publication : " << year << endl;
+    }
 };
 
 void menu() {
-    cout << "Choose any option from following" << endl << "\t1. Add pet" << endl << "\t2. Display all pets" << endl << "\t3. Adopt pet" << endl << "\t4. Display all adopteed pets" << endl << "\t5. Return pet" << endl << "\t6. Exit" << endl;
+    cout << "Choose any option from following" << endl << "\t1. Add book or books" << endl << "\t2. Update any book" << endl << "\t3. Display all books" << endl << "\t4. Exit" << endl;
 }
 
-Pet addPet() {
-    Pet pet;
+int addBooks(Book books[1000], int totalBooks) {
+    int morebooks;
+    cout << endl << "Enter number of books : ";
+    cin >> morebooks;
     
-    cout << endl << "Enter details of pet : " << endl;
-    pet.addPet();
+    for(int i = totalBooks; i < totalBooks+morebooks; i++) {
+        cout << endl << "Enter details of book " << i+1 << endl;
+        books[i].inputDetails();
+    }
     
-    return pet;
+    return totalBooks+morebooks;
 }
 
-void displayAllPets(Pet pets[], int totalPets) {
-    for(int i = 0; i < totalPets; i++) {
-        cout << "Details of pet " << i+1 << endl;
-        pets[i].displayPetDetails();
-        cout << endl;
+void displayBooks(Book books[1000], int totalBooks) {
+    for(int i = 0; i < totalBooks; i++) {
+        cout << endl << "Details of book " << i+1 << endl;
+        books[i].outputDetails();
     }
 }
 
-void adopPet(Pet pets[], int totalPets) {
-    string name;
+void findAndUpdateBook(Book books[1000], int totalBooks) {
     
-    cout << "Enter pet name you want to adopt : ";
-    cin >> name;
+    string titleOrAuthor;
+    cout << endl << "Enter the title or author of the book : ";
+    cin >> titleOrAuthor;
     
-    for(int i = 0; i < totalPets; i++) {
-        if(pets[i].getName() == name)
+    for(int i = 0; i < totalBooks; i++) {
+        if(books[i].title == titleOrAuthor || books[i].author == titleOrAuthor) {
+            cout << endl << "Enter new details of this book" << endl;
+            books[i].inputDetails();
+            return;
+        }
     }
+    
+    cout << endl << "Book with such title or author not found" << endl;
 }
 
-int main() {
-
-    vector<Pet> pets;
+int main(){
     
-    int totalPets = 0;
+    Book books[1000];
+    
+    int totalBooks = 0;
     
     while(true) {
         menu();
@@ -143,23 +78,19 @@ int main() {
         cin >> choice;
         
         switch(choice) {
-            case 1 : 
-                pets[totalPets++] = addPet();
+            case 1 :
+                totalBooks = addBooks(books, totalBooks);
                 break;
             case 2 : 
-                displayAllPets(pets, totalPets);
+                findAndUpdateBook(books, totalBooks);
                 break;
             case 3 : 
+                displayBooks(books, totalBooks);
                 break;
             case 4 : 
-                break;
-            case 5 : 
-                break;
-            case 6 :
-            default :
+            default : 
                 return 0;
         }
-        
         cout << endl;
     }
 }

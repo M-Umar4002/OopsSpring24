@@ -1,70 +1,140 @@
 #include <iostream>
+#include <array>
+#include <vector>
 using namespace std;
 
-struct Product {
-    string name, id;
-    float price;
-    int quantity;
+class Pet {
+    string healthStatus, name;
+    int hungerLevel, happinessLevel;
+    vector<string> specialSkills;
+    
+    public : 
+        void addPet() {
+            cout << "Enter pet's name : ";
+            cin >> name;
+            
+            cout << "Enter health status : ";
+            cin >> healthStatus;
+            
+            cout << "Enter hunger level : ";
+            cin >> hungerLevel;
+            
+            cout << "Enter happiness level : ";
+            cin >> happinessLevel;
+            
+            int size;
+            
+            cout << "Enter total number of skills : ";
+            cin >> size;
+            
+            for(int i = 0; i < size; i++) {
+                cout << "Enter skill " << i+1 << " : ";
+                cin >> specialSkills[i];
+            }
+        }
+    
+        void displayPetDetails() {
+            cout << "Health status : " << healthStatus << endl << "Happiness level : " << happinessLevel << endl << "Hunger level : " << hungerLevel << endl;
+            
+            for(int i = 0; i < specialSkills.size(); i++) {
+                if(!i) cout<< endl << "Special skills are" << endl;
+                cout << specialSkills[i] << endl;
+            }
+        }
+        
+        void updateHappiness(int hap) {
+            happinessLevel = hap;
+        }
+        
+        void updateHealth(int health) {
+            healthStatus = health;
+        }
+        
+        void updateHunger(int hunger) {
+            hungerLevel = hunger;
+            
+            if(hungerLevel >= 5) {
+                happinessLevel--;
+            } else {
+                happinessLevel++;
+            }
+        }
+        
+        string getName() {
+            return name;
+        }
+};
+
+class Adopter {
+    string adopterName;
+    int adopterMobileNum;
+    vector<Pet> adoptedPetRecords;
+    
+    public : 
+        Adopter(string name, int mobNum) : adopterName(name), adopterMobileNum(mobNum) {}
+        
+        void adoptPet(Pet pet) {
+            adoptedPetRecords.push_back(pet);
+        }
+        
+        void returnPet(string name) {
+            for(int i = 0; i < adoptedPetRecords.size(); i++) {
+                if(adoptedPetRecords[i].getName() == name) {
+                    adoptedPetRecords.erase(adoptedPetRecords.begin()+i);
+                }
+            }
+        }
+        
+        void displayAdoptedPets() {
+            for(Pet pet : adoptedPetRecords) {
+                cout << "Name : " << pet.getName() << endl;
+                pet.displayPetDetails();
+                cout << endl;
+            }
+        }
+        
+        string getName() {
+            return name;
+        }
 };
 
 void menu() {
-    cout << "Choose any option from following" << endl << "\t1. Add a product" << endl << "\t2. Update a product" << endl << "\t3. Display a product" << endl << "\t4. Exit" << endl;
+    cout << "Choose any option from following" << endl << "\t1. Add pet" << endl << "\t2. Display all pets" << endl << "\t3. Adopt pet" << endl << "\t4. Display all adopteed pets" << endl << "\t5. Return pet" << endl << "\t6. Exit" << endl;
 }
 
-Product inputProduct() {
-
-    Product product;
-
-    cout << "Enter product name : ";
-    cin >> product.name;
+Pet addPet() {
+    Pet pet;
     
-    cout << "Enter product id : ";
-    cin >> product.id;
+    cout << endl << "Enter details of pet : " << endl;
+    pet.addPet();
     
-    cout << "Enter product price : ";
-    cin >> product.price;
-    
-    cout << "Enter product quantity : ";
-    cin >> product.quantity;
-    
-    return product;
+    return pet;
 }
 
-void updateProduct(Product products[100], int totalProducts) {
-    string id;
-    cout << endl << "Enter the id of the product for which you want to update its data : ";
-    cin >> id;
-    
-    for(int i = 0; i < totalProducts; i++) {
-        if(products[i].id == id) {
-            cout << endl << "Enter new details of this product" << endl;
-            products[i] = inputProduct();
-            return;
-        }    
+void displayAllPets(Pet pets[], int totalPets) {
+    for(int i = 0; i < totalPets; i++) {
+        cout << "Details of pet " << i+1 << endl;
+        pets[i].displayPetDetails();
+        cout << endl;
     }
-    
-    cout << endl << "Product with such id not found" << endl;
 }
 
-void displayProduct(Product products[100], int totalProducts) {
-    string id;
-    cout << endl << "Enter the id of the product for which you want all details : ";
-    cin >> id;
+void adopPet(Pet pets[], int totalPets) {
+    string name;
     
-    for(int i = 0; i < totalProducts; i++) {
-        if(products[i].id == id) {
-            cout << endl << "Details of product " << endl << "Product Name : " << products[i].name << endl << "Product Id : " << products[i].id << endl << "Product Price : " << products[i].price << endl << "Total Quantity of Product : " << products[i].quantity << endl;
-            return;
-        }
+    cout << "Enter pet name you want to adopt : ";
+    cin >> name;
+    
+    for(int i = 0; i < totalPets; i++) {
+        if(pets[i].getName() == name)
     }
-    
-    cout << endl << "Product with such id not found" << endl;
 }
 
-int main(){
-    Product products[100];
+int main() {
+
+    vector<Pet> pets;
     
-    int totalProducts = 0;
+    int totalPets = 0;
     
     while(true) {
         menu();
@@ -74,19 +144,22 @@ int main(){
         
         switch(choice) {
             case 1 : 
-                cout << endl << "Enter details of product" << endl;
-                products[totalProducts++] = inputProduct();
+                pets[totalPets++] = addPet();
                 break;
             case 2 : 
-                updateProduct(products, totalProducts);
+                displayAllPets(pets, totalPets);
                 break;
             case 3 : 
-                displayProduct(products, totalProducts);
                 break;
             case 4 : 
-            default : 
+                break;
+            case 5 : 
+                break;
+            case 6 :
+            default :
                 return 0;
         }
+        
         cout << endl;
     }
 }

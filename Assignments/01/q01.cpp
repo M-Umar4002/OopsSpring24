@@ -10,10 +10,11 @@ class Pet {
     public : 
         void addPet() {
             cout << "Enter pet's name : ";
-            cin >> name;
+            cin.ignore();
+            getline(cin, name);
             
             cout << "Enter health status : ";
-            cin >> healthStatus;
+            getline(cin, healthStatus);
             
             cout << "Enter hunger level (1-10) : ";
             cin >> hungerLevel;
@@ -43,6 +44,7 @@ class Pet {
                 i != specialSkills.size()-1 ? cout << ", " : cout << endl;
             }
         }
+
         
         void updateHappiness(int hap) {
             happinessLevel = hap;
@@ -73,32 +75,32 @@ class Adopter {
     vector<Pet> adoptedPetRecords;
     
     public : 
-        Adopter() {}
-    
         Adopter(string name, int mobNum) : adopterName(name), adopterMobileNum(mobNum) {}
         
-        void adoptPet(Pet pet) {
+        void adoptPet(Pet &pet) {
             adoptedPetRecords.push_back(pet);
         }
         
-        bool returnPet(string name) {
+        int returnPet(string name) {
             for(int i = 0; i < adoptedPetRecords.size(); i++) {
                 if(adoptedPetRecords[i].getName() == name) {
-                    adoptedPetRecords.erase(adoptedPetRecords.begin()+i);
-                    cout << "Returned pet succesfully" << endl;
-                    return true;
+                    return i;
                 }
             }
             cout << "Pet having name " << name << " not found" << endl;
-            return false;
+            return -1;
         }
         
         void displayAdoptedPets() {
             for(Pet pet : adoptedPetRecords) {
-                cout << "Name : " << pet.getName() << endl;
+                cout << endl;
                 pet.displayPetDetails();
                 cout << endl;
             }
+        }
+        
+        vector<Pet>& getAdoptedPetRecords() {
+            return adoptedPetRecords;
         }
 };
 
@@ -123,25 +125,15 @@ void displayAllPets(vector<Pet> pets, int totalPets) {
     }
 }
 
-void adoptPet(vector<Pet> pets, int &totalPets, Adopter adopter) {
+void adoptAnyPet(vector<Pet> &pets, int &totalPets, Adopter &adopter) {
     string name;
     
     cout << endl << "Enter pet name you want to adopt : ";
-    cin >> name;
+    cin.ignore();
+    getline(cin, name);
     
     for(int i = 0; i < totalPets; i++) {
         if(pets[i].getName() == name) {
-            string adopterName;
-            int mobNum;
-            
-            cout << "Enter name of adopter : ";
-            cin.ignore();
-            getline(cin, adopterName);
-            
-            cout << "Enter mobile number : ";
-            cin >> mobNum;
-            
-            adopter = Adopter(adopterName, mobNum);
             adopter.adoptPet(pets[i]);
             pets.erase(pets.begin() + i);
             
@@ -155,14 +147,8 @@ void adoptPet(vector<Pet> pets, int &totalPets, Adopter adopter) {
     cout << "Pet having name " << name << "not found" << endl;
 }
 
-void interactWithPet(vector<Pet> pets, int totalPets) {
-    
-    string name;
-    
-    cout << "Enter name of pet you want to interact with : ";
-    cin >> name;
-    
-    for(Pet pet : pets) {
+bool interact(vector<Pet> &pets, string name) {
+    for(Pet &pet : pets) {
         if(pet.getName() == name) {
             int happinessLevel, hungerLevel;
             string healthStatus;
@@ -171,25 +157,53 @@ void interactWithPet(vector<Pet> pets, int totalPets) {
             cin >> happinessLevel;
             
             cout << "Enter new health status of the pet : ";
-            cin >> healthStatus;
+            cin.ignore();
+            getline(cin, healthStatus);
             
             cout << "Enter new hunger level of the pet (1-10) : ";
             cin >> hungerLevel;
             
             pet.updateHappiness(happinessLevel), pet.updateHealth(healthStatus), pet.updateHunger(hungerLevel);
-            return;
+            return true;
         }
     }
-    cout << "Pet having name" << name << " not found" << endl;
+    return false;
 }
 
-bool returnPet(Adopter adopter) {
+void interactWithPet(vector<Pet> &pets, Adopter &adopter, int totalPets) {
+    
+    string name;
+    
+    cout << endl << "Enter name of pet you want to interact with : ";
+    cin.ignore();
+    getline(cin, name);
+    
+    if(interact(pets, name)) return;
+    
+    vector<Pet> &adoptedPetRecords = adopter.getAdoptedPetRecords();
+    
+    if(interact(adoptedPetRecords, name)) return;
+
+    cout << endl << "Pet having name" << name << " not found" << endl;
+}
+
+bool returnAPet(vector<Pet> &pets, Adopter &adopter) {
     string name;
 
-    cout << "Enter name of pet : ";
-    cin >> name;
+    cout << endl << "Enter name of pet : ";
+    cin.ignore();
+    getline(cin, name);
     
-    return adopter.returnPet(name);
+    int i = adopter.returnPet(name);
+    
+    if(i != -1) {
+        pets.push_back(adopter.getAdoptedPetRecords().at(i));
+        adopter.getAdoptedPetRecords().erase(adopter.getAdoptedPetRecords().begin() + i);
+        cout << endl << "Returned pet succesfully" << endl;
+        return true;
+    }
+    
+    return false;
 }
 
 int main() {
@@ -198,14 +212,14 @@ int main() {
     
     int totalPets = 0;
     
+    Adopter adopter("Ali", 54);
+    
     while(true) {
         menu();
         int choice;
         cout << "Choice : ";
         cin >> choice;
-        
-        Adopter adopter;
-        
+    
         switch(choice) {
             case 1 : 
                 pets.push_back(addPet());
@@ -215,23 +229,22 @@ int main() {
                 displayAllPets(pets, totalPets);
                 break;
             case 3 : 
-                adoptPet(pets, totalPets, adopter);
+                adoptAnyPet(pets, totalPets, adopter);
                 break;
             case 4 : 
                 adopter.displayAdoptedPets();
                 break;
             case 5 :
-                interactWithPet(pets, totalPets);
+                interactWithPet(pets, adopter, totalPets);
                 break;
             case 6 : 
-                if(returnPet(adopter)) totalPets++;
+                if(returnAPet(pets, adopter)) totalPets++;
                 break;
             case 7 : 
                 return 0;
             default :
                 cout << "Incorrect choice" << endl;
         }
-        
         cout << endl;
     }
 }

@@ -68,7 +68,7 @@ class User {
             string couponCode, restaurantCode;
             int validFrom, validUntil, usedDate;
 
-            cout << endl << "Enter detais of user " << counter+1 << endl << "Enter restaurant code : ";
+            cout << endl << "Enter restaurant code : ";
             cin >> restaurantCode;
 
             cout << "Enter coupon code : ";

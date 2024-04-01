@@ -45,8 +45,8 @@ class Post {
             cout << endl << "Id : " << id << endl << "Content : " << content << endl << "Likes : " << likes << endl << "Total Views : " << views << endl << "Total Comments : " << totalComments << endl;
             
             for(int i = 0; i < comments.size(); i++) {
-                if(!i) cout << "Comments " << endl;
-                cout << "\tComment " << i+1 << " : " << comments[i] << endl;
+                if(!i) cout << "Comments : " << endl;
+                cout << "   Comment " << i+1 << " : " << comments[i] << endl;
             }
             
             views++;
@@ -91,7 +91,7 @@ class RegularUser : public User {
         
         void viewFeed() {
             for(int i = 0; i < count; i++) {
-                cout << endl << endl << "Post " << i+1 << endl;
+                cout << endl << endl << "Post " << i+1 << " : " << endl;
                 feed[i].displayDetails();
             }
         }
@@ -116,6 +116,8 @@ class BusinessUser : public User {
 };
 
 int main() {
+    cout << "Name : Muhammad Umar" << endl << "Student Id : 23K-0023" << endl << endl;
+    
     RegularUser r("Umar", "umar123@gmail.com", "umar123");
     BusinessUser b("Ali", "ali689@gmail.com", "password23");
     

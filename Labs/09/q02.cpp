@@ -12,9 +12,7 @@ class Shape {
             return 0;
         }
         
-        virtual void displayProperties() const {
-
-        }
+        virtual void displayProperties() const {}
 };
 
 class Circle : public Shape {
@@ -39,7 +37,7 @@ class Circle : public Shape {
         }
 
         void displayProperties() const {
-            cout << "Properties of the Circle : " << endl << "Area : " << area() << endl << "Perimeter : " << perimeter() << endl << "Diameter : " << diameter() << endl;
+            cout << endl << "Properties of the Circle : " << endl << " - Area : " << area() << endl << " - Perimeter : " << perimeter() << endl << " - Diameter : " << diameter() << endl;
         }
 };
 
@@ -68,7 +66,7 @@ class Rectangle : public Shape {
         }
 
         void displayProperties() const {
-            cout << "Properties of the Rectangle : " << endl << "Area : " << area() << endl << "Perimeter : " << perimeter() << endl << "Diagonal : " << diagonal() << endl;
+            cout << endl << "Properties of the Rectangle : " << endl << " - Area : " << area() << endl << " - Perimeter : " << perimeter() << endl << " - Diagonal : " << diagonal() << endl;
         }
 };
 
@@ -77,7 +75,7 @@ class Square : public Shape {
 
     public :
         Square() {
-            cout << "Enter length of square : ";
+            cout << "Enter length of the side of square : ";
             cin >> length;
         }
 
@@ -90,58 +88,123 @@ class Square : public Shape {
         }
 
         double diagonal() const {
-            return length/sqrt(2);
+            return length * sqrt(2);
         }
 
         void displayProperties() const {
-            cout << "Properties of the Square : " << endl << "Area : " << area() << endl << "Perimeter : " << perimeter() << endl << "Diagonal : " << diagonal() << endl;
+            cout << endl << "Properties of the Square : " << endl << " - Area : " << area() << endl << " - Perimeter : " << perimeter() << endl << " - Diagonal : " << diagonal() << endl;
         }
 };
 
 class Triangle : public Shape {
-    protected:
     double side1, side2, side3;
+    
+    protected : 
+        Triangle(int a) {}
 
     public :
         Triangle() {
-            cout << "Enter side 1 of triangle : ";
+            cout << "Enter length of side 1 of triangle : ";
             cin >> side1;
 
-            cout << "Enter side 2 of triangle : ";
+            cout << "Enter length of side 2 of triangle : ";
             cin >> side2;
 
-            cout << "Enter side 3 of triangle : ";
+            cout << "Enter length of side 3 of triangle : ";
             cin >> side3;
         }
 
-        double area() const {
+        virtual double area() const {
             double semiPer = perimeter()/2;
 
             return sqrt(semiPer * (semiPer - side1) * (semiPer - side2) * (semiPer - side3));
         }
 
-        double perimeter() const {
+        virtual double perimeter() const {
             return side1 + side2 + side3;
         }
 
-        void displayProperties() const {
-            cout << "Properties of the Triangle : " << endl << "Area : " << area() << endl << "Perimeter : " << perimeter() << endl;
+        virtual void displayProperties() const {
+            cout << endl << "Properties of the Triangle : " << endl << " - Area : " << area() << endl << " - Perimeter : " << perimeter() << endl;
         }
 };
 
 class EquilateralTriangle : public Triangle {
-   //double side;
-
+    double side;
+    
     public :
-        EquilateralTriangle() {
+        EquilateralTriangle() : Triangle(5) {
             cout << "Enter length of the side of equilateral triangle : ";
-            cin >> side1;
-            side2 = side3 = side1;
+            cin >> side;
+        }
+        
+        double area() const {
+            double semiPer = perimeter()/2;
+            
+            return sqrt(semiPer * pow((semiPer - side), 3));
+        }
+        
+        double perimeter() const {
+            return 3 * side;
+        }
+
+        void displayProperties() const {
+            cout << endl << "Properties of the Equilateral Triangle : " << endl << " - Area : " << area() << endl << " - Perimeter : " << perimeter() << endl;
         }
 };
 
-int main() {
+void menu() {
+    cout << endl << "Please select a shape : " << endl << "\t1. Circle" << endl << "\t2. Rectangle" << endl << "\t3. Square" << endl << "\t4. Triangle" << endl << "\t5. Equilateral Triangle" << endl << "Enter your choice : ";
+}
 
+int main() {
+    cout << "Welcome to the Geometry Competition Calculator!" << endl;
+    
+    Shape* shape;
+    
+    string option = "yes";
+    
+    while(option == "yes") {
+        menu();
+        int choice;
+        cin >> choice;
+        
+        cout << endl;
+        
+        switch(choice) {
+            case 1 : 
+                shape = new Circle();
+                
+                break;
+            
+            case 2 : 
+                shape = new Rectangle();
+                
+                break;
+                
+            case 3 : 
+                shape = new Square();
+                
+                break;
+                
+            case 4 : 
+                shape = new Triangle();
+                
+                break;
+                
+            case 5 : 
+                shape = new EquilateralTriangle();
+                
+                break;
+        }
+        
+        shape->displayProperties();
+        
+        cout << endl << "Do you want to calculate properties for another shape? (yes/no) : ";
+        cin >> option;
+    }
+    
+    cout << endl << "Thank you for using the Geometry Competition Calculator!";
 
     return 0;
 }

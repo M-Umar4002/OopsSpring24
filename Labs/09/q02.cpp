@@ -174,31 +174,28 @@ int main() {
         switch(choice) {
             case 1 : 
                 shape = new Circle();
-                
                 break;
             
             case 2 : 
                 shape = new Rectangle();
-                
                 break;
                 
             case 3 : 
                 shape = new Square();
-                
                 break;
                 
             case 4 : 
                 shape = new Triangle();
-                
                 break;
                 
             case 5 : 
                 shape = new EquilateralTriangle();
-                
                 break;
         }
         
         shape->displayProperties();
+        
+        delete shape;
         
         cout << endl << "Do you want to calculate properties for another shape? (yes/no) : ";
         cin >> option;

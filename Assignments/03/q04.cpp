@@ -33,7 +33,7 @@ class ReconDrone : public Drone, public Flyable, public Scannable {
     float cameraResolution, maxFlightTime;
     
     public : 
-        ReconDrone(float latitude, float longitude, float altitude, float speed, float cameraResolution, float maxFlightTime) : latitude(latitude), longitude(longitude), altitude(altitude), speed(speed), cameraResolution(cameraResolution), maxFlightTime(maxFlightTime) {}
+        ReconDrone(float latitude, float longitude, float altitude, float speed, float cameraResolution, float maxFlightTime) : Drone(latitude, longitude, altitude, speed), cameraResolution(cameraResolution), maxFlightTime(maxFlightTime) {}
     
         void adjustAltitude(float meters) {
             altitude = meters;
@@ -44,11 +44,11 @@ class ReconDrone : public Drone, public Flyable, public Scannable {
         };
         
         void takeOff() {
-            cout << "Take Off" << endl;
+            cout << "Taking Off" << endl;
         }
         
         void land() {
-            cout << "Land" << endl;
+            cout << "Landing" << endl;
         }
         
         void navigateTo(float latitude, float longitude, float altitude) {
@@ -60,10 +60,10 @@ class ReconDrone : public Drone, public Flyable, public Scannable {
                 
                 if (this->altitude > altitude) {
                     // Adjust time for climbing
-                    time += (altitude - destAltitude) / 20.0f; // Assuming climbing speed of 20 meters per hour
+                    time += (this->altitude - altitude) / 20.0f; // Assuming climbing speed of 20 meters per hour
                 } else if (this->altitude < altitude) {
                     // Adjust time for descending
-                    time += (destAltitude - altitude) / 30.0f; // Assuming descending speed of 30 meters per hour
+                    time += (altitude - this->altitude) / 30.0f; // Assuming descending speed of 30 meters per hour
                 }
                 
                 cout << "Estimated time to reach destination: " << time << " hours" << endl;
@@ -73,12 +73,35 @@ class ReconDrone : public Drone, public Flyable, public Scannable {
                 cout << "Error during navigation : " << e.what() << endl;
             }
         }
+        
+        void scanArea(float radius) {
+            try {
+                // Simulate scanning the environment
+                int objectsDetected = rand() % 10; // Random number of objects detected
+                cout << endl << "Detected " << objectsDetected << " objects:" << endl;
+    
+                for (int i = 0; i < objectsDetected; ++i) {
+                    float objectLat = latitude + static_cast<float>(rand() % 100) / 1000.0f;
+                    float objectLon = longitude + static_cast<float>(rand() % 100) / 1000.0f;
+                    cout << "Object " << i + 1 << " at (" << objectLat << ", " << objectLon << ")" << endl;
+                }
+                
+                cout << endl;
+            } catch (const exception& e) {
+                cerr << "Error during scanning: " << e.what() << endl;
+            }
+        }
 };
 
-
-
 int main() {
+    srand(time(NULL));
     
+    ReconDrone rd(0.f, 0.f, 80.f, 60.f, 40.f, 10.f);
+    
+    rd.takeOff();
+    rd.navigateTo(2.f, 3.f, 120.f);
+    rd.scanArea(200.f);
+    rd.land();
 
     return 0;
 }

@@ -72,6 +72,7 @@ class Matrix {
             for(int i = 0; i < rows; i++) {
                 delete [] matrix[i];
             }
+            delete [] matrix;
         }
 };
 
@@ -111,6 +112,14 @@ void display(T** matrix, int rows, int cols) {
         }
         cout << endl;
     }
+}
+
+template <class T>
+void dealloacteArray(T** matrix, int rows) {
+    for(int i = 0; i < rows; i++) {
+        delete [] matrix[i];
+    }
+    delete [] matrix;
 }
 
 int main() {
@@ -171,6 +180,9 @@ int main() {
     
     cout << endl << "After multiplying double matrices :" << endl;
     display(doubleMultiplication, 2, 2);
+    
+    dealloacteArray(intAddition, 3), dealloacteArray(intSubtraction, 3), dealloacteArray(intMultiplication, 3);
+    dealloacteArray(doubleAddition, 2), dealloacteArray(doubleSubtraction, 2), dealloacteArray(doubleMultiplication, 2);
 
     return 0;
 }

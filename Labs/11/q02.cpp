@@ -10,7 +10,7 @@ class Account {
         static int totalAccounts;
     
     public :
-        Account() : accountNumber(totalAccounts++), balance(0.0) {}
+        Account() : accountNumber(++totalAccounts), balance(0.0) {}
     
         int getAccountNumber() const {
             return accountNumber;
@@ -63,6 +63,7 @@ class CurrentAccount : public Account {
         void withdraw(double amount) {
             if(balance + overdraftLimit >= amount) {
                 balance -= amount;
+                if(balance < 0) balance = 0;
             } else {
                 cout << "Overdraft limit exceeded" << endl;
             }
@@ -73,7 +74,26 @@ class CurrentAccount : public Account {
         }
 };
 
+void displayDetails(Account* account) {
+    cout << "Account Number : " << account->getAccountNumber() << endl << "Balance : Rs." << account->getBalance() << endl;
+}
+
 int main() {
+    Account* savingsAccount = new SavingsAccount(0.03);
+    savingsAccount->deposit(22000);
+    savingsAccount->withdraw(4000);
+    savingsAccount->calculateInterest();
+    
+    cout << "Details of Saving Account: " << endl;
+    displayDetails(savingsAccount);
+    
+    Account* currentAccount = new CurrentAccount(10000);
+    currentAccount->deposit(2000);
+    currentAccount->withdraw(4000);
+    currentAccount->calculateInterest();
+    
+    cout << endl << "Details of Current Account: " << endl;
+    displayDetails(currentAccount);
     
     return 0;
 }
